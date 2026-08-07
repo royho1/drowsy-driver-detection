@@ -1,9 +1,18 @@
----
-
 # Drowsy Driver Detection System
 
+> This is a fork of [varshathennarasu/DrowsyDriverDetection](https://github.com/varshathennarasu/DrowsyDriverDetection).
+> It was a 5-person team project built through the AI Student Collective at UC Davis
+> during the Winter 2025 cycle, where it won Best Execution. I worked on it as part
+> of that team.
+
 ## Overview
-As a project manager at AI Student Collective, I'm leading a 5-person team to create this project that aims to enhance road safety by detecting signs of drowsiness or intoxication in drivers using facial landmarks and machine learning. The system leverages real-time video feed analysis alongside a machine learning model trained on a Kaggle dataset to identify fatigue or impaired behavior, alerting drivers to prevent accidents.
+
+This is a real-time system that detects signs of driver drowsiness from a live
+webcam feed to help prevent fatigue-related accidents. It analyzes facial landmarks
+frame by frame and pairs threshold-based eye tracking with a machine learning model
+trained on a labeled Kaggle dataset, then triggers an audio alert when it detects
+fatigue.
+
 Kaggle Dataset: https://www.kaggle.com/datasets/prasadvpatil/mrl-dataset
 
 ## Features
