@@ -20,6 +20,7 @@ frame_check = 20
 
 mixer.init()
 _alert_loaded = False
+_afplay_proc = None
 if os.path.exists(ALERT_SOUND):
     mixer.music.load(ALERT_SOUND)
     _alert_loaded = True
@@ -35,26 +36,37 @@ def eye_aspect_ratio(eye):
 
 
 def play_alert():
-    """Play the drowsiness alert via pygame, with macOS afplay fallback."""
+    """Play the drowsiness alert via pygame, with macOS afplay fallback.
+
+    Only starts audio when nothing is already playing, so a sustained
+    closed-eye streak does not spawn overlapping afplay processes.
+    """
+    global _afplay_proc
+
     if _alert_loaded:
         try:
-            mixer.music.play()
+            if not mixer.music.get_busy():
+                mixer.music.play()
             return
         except Exception as e:
             print(f"pygame alert failed ({e}); trying system audio…")
-    if os.path.exists(ALERT_SOUND) and sys.platform == "darwin":
-        subprocess.Popen(
-            ["afplay", ALERT_SOUND],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
+
+    if not (os.path.exists(ALERT_SOUND) and sys.platform == "darwin"):
+        return
+    if _afplay_proc is not None and _afplay_proc.poll() is None:
+        return
+    _afplay_proc = subprocess.Popen(
+        ["afplay", ALERT_SOUND],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 if not os.path.exists(PREDICTOR_PATH):
     print(
         f"Error: '{PREDICTOR_PATH}' not found.\n"
         "Run:  python setup_live_demo.py\n"
-        "Or download http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 ,\n"
+        "Or download https://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 ,\n"
         "decompress it, and place the .dat file in the project root."
     )
     sys.exit(1)
