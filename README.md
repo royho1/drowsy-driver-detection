@@ -15,6 +15,11 @@ fatigue.
 
 Kaggle Dataset: https://www.kaggle.com/datasets/prasadvpatil/mrl-dataset
 
+## Entry points
+
+- **`SourceCode.py`** — Real-time EAR (eye aspect ratio) detector. Uses a webcam, dlib facial landmarks, and EAR thresholds; plays an alert when eyes stay closed. This is the main live demo and does **not** need `drowsiness_model.h5`.
+- **`app.py`** — Separate Flask image-upload demo. Serves `index.html`, accepts an uploaded eye image, and classifies it with a Keras model file named `drowsiness_model.h5`. That model file is **not** shipped in this repo; without it the app starts but classification returns a clear error and the UI explains that the demo needs the model.
+
 ## Features
 - **Real-Time Eye Blink Detection**: Monitors eye aspect ratio (EAR) to detect signs of drowsiness.
 - **Facial Landmark Detection**: Identifies facial regions to track eye and mouth movements using a pre-trained model.
