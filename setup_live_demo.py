@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import bz2
+import hashlib
 import os
 import sys
 import tempfile
@@ -11,13 +12,30 @@ import urllib.request
 
 PREDICTOR = "shape_predictor_68_face_landmarks.dat"
 ARCHIVE = PREDICTOR + ".bz2"
-URL = "http://dlib.net/files/" + ARCHIVE
+URL = "https://dlib.net/files/" + ARCHIVE
 # Upstream file is ~95 MB; reject truncated leftovers from a failed setup.
 MIN_PREDICTOR_BYTES = 50 * 1024 * 1024
+# SHA-256 of the official decompressed shape_predictor_68_face_landmarks.dat
+PREDICTOR_SHA256 = (
+    "fbdc2cb80eb9aa7a758672cbfdda32ba6300efe9b6e6c7a299ff7e736b11b92f"
+)
+
+
+def _sha256_file(path: str) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as f:
+        while True:
+            chunk = f.read(1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _predictor_ready(path: str) -> bool:
-    return os.path.exists(path) and os.path.getsize(path) >= MIN_PREDICTOR_BYTES
+    if not os.path.exists(path) or os.path.getsize(path) < MIN_PREDICTOR_BYTES:
+        return False
+    return _sha256_file(path) == PREDICTOR_SHA256
 
 
 def main() -> int:
@@ -30,7 +48,10 @@ def main() -> int:
         return 0
 
     if os.path.exists(predictor_path):
-        print(f"Removing incomplete predictor ({os.path.getsize(predictor_path)} bytes)…")
+        print(
+            f"Removing incomplete/untrusted predictor "
+            f"({os.path.getsize(predictor_path)} bytes)…"
+        )
         os.remove(predictor_path)
 
     print(f"Downloading {URL} …")
@@ -62,10 +83,16 @@ def main() -> int:
                 f"decompressed file too small ({os.path.getsize(tmp_path)} bytes)"
             )
 
+        actual = _sha256_file(tmp_path)
+        if actual != PREDICTOR_SHA256:
+            raise RuntimeError(
+                f"SHA-256 mismatch (got {actual}, expected {PREDICTOR_SHA256})"
+            )
+
         os.replace(tmp_path, predictor_path)
         tmp_path = None
     except Exception as e:
-        print(f"Decompress failed: {e}")
+        print(f"Decompress/verify failed: {e}")
         if tmp_path and os.path.exists(tmp_path):
             os.remove(tmp_path)
         return 1
