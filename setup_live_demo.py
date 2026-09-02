@@ -6,11 +6,18 @@ from __future__ import annotations
 import bz2
 import os
 import sys
+import tempfile
 import urllib.request
 
 PREDICTOR = "shape_predictor_68_face_landmarks.dat"
 ARCHIVE = PREDICTOR + ".bz2"
 URL = "http://dlib.net/files/" + ARCHIVE
+# Upstream file is ~95 MB; reject truncated leftovers from a failed setup.
+MIN_PREDICTOR_BYTES = 50 * 1024 * 1024
+
+
+def _predictor_ready(path: str) -> bool:
+    return os.path.exists(path) and os.path.getsize(path) >= MIN_PREDICTOR_BYTES
 
 
 def main() -> int:
@@ -18,9 +25,13 @@ def main() -> int:
     predictor_path = os.path.join(root, PREDICTOR)
     archive_path = os.path.join(root, ARCHIVE)
 
-    if os.path.exists(predictor_path) and os.path.getsize(predictor_path) > 0:
+    if _predictor_ready(predictor_path):
         print(f"Already present: {predictor_path}")
         return 0
+
+    if os.path.exists(predictor_path):
+        print(f"Removing incomplete predictor ({os.path.getsize(predictor_path)} bytes)…")
+        os.remove(predictor_path)
 
     print(f"Downloading {URL} …")
     try:
@@ -31,11 +42,32 @@ def main() -> int:
         return 1
 
     print(f"Decompressing {ARCHIVE} …")
+    tmp_path = None
     try:
-        with bz2.open(archive_path, "rb") as src, open(predictor_path, "wb") as dst:
-            dst.write(src.read())
+        with tempfile.NamedTemporaryFile(
+            dir=root, prefix=PREDICTOR + ".", suffix=".tmp", delete=False
+        ) as tmp:
+            tmp_path = tmp.name
+            with bz2.open(archive_path, "rb") as src:
+                while True:
+                    chunk = src.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    tmp.write(chunk)
+            tmp.flush()
+            os.fsync(tmp.fileno())
+
+        if os.path.getsize(tmp_path) < MIN_PREDICTOR_BYTES:
+            raise RuntimeError(
+                f"decompressed file too small ({os.path.getsize(tmp_path)} bytes)"
+            )
+
+        os.replace(tmp_path, predictor_path)
+        tmp_path = None
     except Exception as e:
         print(f"Decompress failed: {e}")
+        if tmp_path and os.path.exists(tmp_path):
+            os.remove(tmp_path)
         return 1
     finally:
         if os.path.exists(archive_path):
