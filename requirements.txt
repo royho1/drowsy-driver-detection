@@ -1,0 +1,15 @@
+# Live webcam EAR demo
+opencv-python
+dlib
+imutils
+scipy
+pygame
+numpy
+
+# Flask image-upload demo
+flask
+tensorflow
+Pillow
+
+# Optional dataset exploration
+matplotlib
