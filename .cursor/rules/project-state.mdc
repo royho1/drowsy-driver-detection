@@ -1,0 +1,13 @@
+---
+description: Load this repo's PROJECT_STATE.md as durable agent memory every session
+alwaysApply: true
+---
+
+# Project state
+
+Before recommending or changing code, read `PROJECT_STATE.md` at the repo root. Treat it as durable memory from prior agent sessions: learnings, nuances, gotchas, and decisions that are not obvious from the code or README.
+
+- Prefer `PROJECT_STATE.md` over guessing when it conflicts with an assumption.
+- If the file is missing, create it (see the `project-state` skill).
+- During significant sessions, suggest logging new durable learnings there.
+- Never store secrets, tokens, or `.env` values in it.

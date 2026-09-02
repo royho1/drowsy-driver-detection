@@ -140,6 +140,15 @@
         <h1>Drowsiness Detection</h1>
         <p>Upload an image to detect drowsiness:</p>
 
+        {% if not model_available %}
+        <p id="model-missing" style="color: #ffb347; border: 1px solid #ffb347; border-radius: 8px; padding: 12px 16px;">
+            This image-upload demo needs a trained Keras model file named
+            <code>drowsiness_model.h5</code> in the project root. The file is not
+            included in the repo. For live webcam detection that does not need this
+            model, run <code>SourceCode.py</code> instead.
+        </p>
+        {% endif %}
+
         <!-- File input with custom label for better design -->
         <label for="file" class="file-label">Choose an Image <i class="fas fa-upload"></i></label>
         <input type="file" id="file" name="file" accept="image/*" required>
@@ -189,29 +198,27 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                // Hide loader after response
+            .then(response => response.json().then(data => ({ ok: response.ok, data })))
+            .then(({ ok, data }) => {
                 document.getElementById('loader').style.display = 'none';
 
-                const prediction = data.prediction;
+                const resultElement = document.getElementById('result');
                 let message = '';
 
-                // Display the result based on classification
-                if (prediction.includes('Drowsy')) {
+                if (!ok || data.error) {
+                    message = data.error || "Error classifying image.";
+                } else if (data.prediction && data.prediction.includes('Drowsy')) {
                     message = "Drowsy driver detected: Closed Eyes";
-                } else if (prediction.includes('Alert')) {
+                } else if (data.prediction && data.prediction.includes('Alert')) {
                     message = "Alert driver: Open Eyes";
                 } else {
                     message = "Error: Unable to classify image properly";
                 }
 
-                const resultElement = document.getElementById('result');
                 resultElement.textContent = message;
                 resultElement.classList.add('show');
             })
             .catch(error => {
-                // Hide loader on error
                 document.getElementById('loader').style.display = 'none';
 
                 const resultElement = document.getElementById('result');

@@ -5,19 +5,36 @@ from PIL import Image
 import numpy as np
 import os
 
-app = Flask(__name__)
+# index.html lives next to this file (not under templates/)
+app = Flask(__name__, template_folder=".")
+
+MODEL_PATH = "drowsiness_model.h5"
+_model = None
 
 # Initialize pygame mixer for sound
 mixer.init()
-mixer.music.load('music.wav')  # Ensure 'music.wav' is in the same directory
-
-# Load the trained model (for image classification)
-MODEL_PATH = "drowsiness_model.h5"
-model = load_model(MODEL_PATH)
-print("Model loaded successfully.")
+if os.path.exists("music.wav"):
+    mixer.music.load("music.wav")
 
 
-# Function to preprocess image for classification
+def get_model():
+    """Load the Keras model on first use. Returns (model, error_message)."""
+    global _model
+    if _model is not None:
+        return _model, None
+    if not os.path.exists(MODEL_PATH):
+        return None, (
+            f"Model file '{MODEL_PATH}' is missing. "
+            "Place a trained Keras .h5 model in the project root to use this demo."
+        )
+    try:
+        _model = load_model(MODEL_PATH)
+        print("Model loaded successfully.")
+        return _model, None
+    except Exception as e:
+        return None, f"Failed to load model '{MODEL_PATH}': {e}"
+
+
 def preprocess_image(image):
     img = image.resize((64, 64))  # Resize to match model input size
     img = img.convert("L")  # Convert to grayscale
@@ -26,47 +43,47 @@ def preprocess_image(image):
     return img_array
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')  # This renders the index.html page
+    model_available = os.path.exists(MODEL_PATH)
+    return render_template("index.html", model_available=model_available)
 
 
-@app.route('/classify', methods=['POST'])
+@app.route("/classify", methods=["POST"])
 def classify_image():
-    if 'file' not in request.files:
+    model, model_error = get_model()
+    if model is None:
+        return jsonify({"error": model_error}), 503
+
+    if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 
-    file = request.files['file']
+    file = request.files["file"]
     try:
         if file:
-            image = Image.open(file)  # Open the uploaded image file
-            processed_image = preprocess_image(image)  # Preprocess image
+            image = Image.open(file)
+            processed_image = preprocess_image(image)
             print("Image preprocessed successfully.")
 
-            prediction = model.predict(processed_image)  # Get model prediction
+            prediction = model.predict(processed_image)
             print("Prediction result:", prediction)
 
-            # Drowsy driver if the first class (Closed Eyes) is more likely, else alert driver
+            # Drowsy if Closed Eyes class is more likely
             if prediction[0][0] > prediction[0][1]:
                 result = "Drowsy Driver: Closed Eyes"
-                mixer.music.play()  # Play alert sound if closed eyes detected
+                if mixer.get_init() and os.path.exists("music.wav"):
+                    mixer.music.play()
             else:
                 result = "Alert Driver: Open Eyes"
 
             return jsonify({"prediction": result})
 
-        else:
-            return jsonify({"error": "No file uploaded"}), 400
+        return jsonify({"error": "No file uploaded"}), 400
 
     except Exception as e:
-        print(f"Error processing image: {str(e)}")  # Log the error
+        print(f"Error processing image: {str(e)}")
         return jsonify({"error": f"Error processing image: {str(e)}"}), 500
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
