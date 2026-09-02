@@ -1,15 +1,8 @@
-# Live webcam EAR demo
-opencv-python
+# Live webcam EAR demo (SourceCode.py) — matches resume / interview demo
+# Pin OpenCV 4.x: OpenCV 5 ships SDL2 and conflicts with pygame on macOS.
+opencv-python>=4.8,<5
 dlib
 imutils
 scipy
 pygame
 numpy
-
-# Flask image-upload demo
-flask
-tensorflow
-Pillow
-
-# Optional dataset exploration
-matplotlib

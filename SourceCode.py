@@ -1,18 +1,28 @@
-import dlib
-import cv2
-from imutils import face_utils
-from scipy.spatial import distance
-from pygame import mixer
-import imutils
+"""Real-time drowsy-driver EAR detector (webcam + dlib + OpenCV + pygame)."""
+
 import os
+import subprocess
 import sys
+
+import cv2
+import dlib
+import imutils
+from imutils import face_utils
+from pygame import mixer
+from scipy.spatial import distance
 
 PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
 ALERT_SOUND = "music.wav"
 
+# Defaults called out on the resume: EAR < 0.25 for 20 consecutive frames.
+thresh = 0.25
+frame_check = 20
+
 mixer.init()
+_alert_loaded = False
 if os.path.exists(ALERT_SOUND):
     mixer.music.load(ALERT_SOUND)
+    _alert_loaded = True
 else:
     print(f"Warning: '{ALERT_SOUND}' not found; visual alerts will still work.")
 
@@ -21,17 +31,30 @@ def eye_aspect_ratio(eye):
     A = distance.euclidean(eye[1], eye[5])
     B = distance.euclidean(eye[2], eye[4])
     C = distance.euclidean(eye[0], eye[3])
-    ear = (A + B) / (2.0 * C)
-    return ear
+    return (A + B) / (2.0 * C)
 
 
-thresh = 0.25
-frame_check = 20
+def play_alert():
+    """Play the drowsiness alert via pygame, with macOS afplay fallback."""
+    if _alert_loaded:
+        try:
+            mixer.music.play()
+            return
+        except Exception as e:
+            print(f"pygame alert failed ({e}); trying system audio…")
+    if os.path.exists(ALERT_SOUND) and sys.platform == "darwin":
+        subprocess.Popen(
+            ["afplay", ALERT_SOUND],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
 
 if not os.path.exists(PREDICTOR_PATH):
     print(
         f"Error: '{PREDICTOR_PATH}' not found.\n"
-        "Download http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 ,\n"
+        "Run:  python setup_live_demo.py\n"
+        "Or download http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 ,\n"
         "decompress it, and place the .dat file in the project root."
     )
     sys.exit(1)
@@ -48,10 +71,18 @@ except Exception as e:
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
-    print("Error: could not open webcam (camera index 0).")
+    print(
+        "Error: could not open webcam (camera index 0).\n"
+        "On macOS: System Settings → Privacy & Security → Camera,\n"
+        "and allow Terminal (or your IDE) camera access, then re-run."
+    )
     sys.exit(1)
 
 flag = 0
+print(
+    "Driver Drowsiness Detection running — look at the camera, "
+    "close your eyes ~1s to trigger an alert. Press q to quit."
+)
 
 while True:
     ret, frame = cap.read()
@@ -91,8 +122,7 @@ while True:
                     (0, 0, 255),
                     2,
                 )
-                if os.path.exists(ALERT_SOUND):
-                    mixer.music.play()
+                play_alert()
         else:
             flag = 0
 

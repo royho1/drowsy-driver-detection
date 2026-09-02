@@ -1,0 +1,22 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# dlib landmark model (download via setup_live_demo.py; ~100MB)
+shape_predictor_68_face_landmarks.dat
+shape_predictor_68_face_landmarks.dat.bz2
+
+# Optional Keras model / dataset (not shipped)
+drowsiness_model.h5
+kaggle_data/
+
+# Python / OS
+__pycache__/
+*.py[cod]
+.Python
+*.egg-info/
+.DS_Store
+.idea/
+.vscode/
+*.log

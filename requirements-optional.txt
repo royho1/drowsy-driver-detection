@@ -1,0 +1,5 @@
+# Optional Flask image-upload demo (app.py) — not needed for the live EAR interview demo
+flask
+tensorflow
+Pillow
+matplotlib
