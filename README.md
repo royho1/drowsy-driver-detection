@@ -32,8 +32,8 @@ python SourceCode.py               # webcam window; press q to quit
 
 If the camera fails: **System Settings → Privacy & Security → Camera** → enable Terminal.
 
-Close your eyes for ~20 frames (about a second) to trigger **DROWSINESS ALERT!** and `music.wav`.
-Defaults: EAR threshold `0.25`, consecutive-frame check `20`.
+Close your eyes for ~70 frames (a few seconds) to trigger **DROWSINESS ALERT!** and `music.wav`.
+Defaults: EAR threshold `0.25`, consecutive-frame check `70`.
 
 ## Entry points
 
@@ -75,7 +75,7 @@ Defaults: EAR threshold `0.25`, consecutive-frame check `20`.
 ```
 
 ## How It Works
-1. **Eye Aspect Ratio (EAR)**: `SourceCode.py` computes EAR from eye landmarks via scipy Euclidean distance. If EAR stays below `0.25` for `20` consecutive frames, the driver is treated as drowsy.
+1. **Eye Aspect Ratio (EAR)**: `SourceCode.py` computes EAR from eye landmarks via scipy Euclidean distance. If EAR stays below `0.25` for `70` consecutive frames, the driver is treated as drowsy.
 2. **Real-Time Alerts**: When the threshold is breached, the system overlays a warning, draws convex-hull eye contours, and plays `music.wav`.
 3. **Missing assets**: If the landmark model is missing, the script exits with setup instructions (run `setup_live_demo.py`). Missing `music.wav` keeps visual alerts working.
 4. **Optional upload demo**: `app.py` preprocesses an uploaded grayscale eye crop and runs a local Keras model if present.
@@ -97,7 +97,7 @@ Note: `dlib` often needs a working C++ toolchain. On macOS, Xcode Command Line T
    ```bash
    python SourceCode.py
    ```
-3. Press `q` to quit. Adjust `thresh` (default `0.25`) and `frame_check` (default `20`) in `SourceCode.py` if needed.
+3. Press `q` to quit. Adjust `thresh` (default `0.25`) and `frame_check` (default `70`) in `SourceCode.py` if needed.
 
 ### Flask upload demo (`app.py`)
 1. Optionally place a trained `drowsiness_model.h5` in the project root (not included here; no training script is in this fork).
