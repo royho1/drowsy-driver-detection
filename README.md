@@ -2,7 +2,8 @@
 
 ## Overview
 
-A real-time computer vision system that detects signs of driver drowsiness from a live webcam feed to help prevent fatigue-related accidents. The system analyzes facial landmarks frame by frame using eye aspect ratio (EAR) thresholds and triggers an audio alert when the driver's eyes remain closed for an extended period. A separate Flask demo can also classify uploaded eye images using a local Keras model.
+A real-time computer vision system that detects signs of driver drowsiness from a live webcam feed to help prevent fatigue-related accidents. The system analyzes facial landmarks frame by frame using eye aspect ratio (EAR) thresholds and triggers an audio alert when the driver's eyes remain closed for an extended period. A separate Flask demo can also classify uploaded eye images using a local Keras model. This was a five-person team project developed through the AI Student Collective at UC Davis during the Winter 2025 cycle, where it won **Best Execution**.
+
 
 Kaggle Dataset (optional, for the image scripts): https://www.kaggle.com/datasets/prasadvpatil/mrl-dataset
 
