@@ -1,4 +1,4 @@
-# Optional Flask image-upload demo (app.py) — not needed for the live EAR interview demo
+# Optional Flask image-upload demo (app.py) — not required for SourceCode.py
 flask
 tensorflow
 Pillow

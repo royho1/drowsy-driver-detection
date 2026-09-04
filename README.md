@@ -15,9 +15,9 @@ a local Keras model file is present.
 
 Kaggle Dataset (optional, for the image scripts): https://www.kaggle.com/datasets/prasadvpatil/mrl-dataset
 
-## Interview / live demo (resume-accurate path)
+## Live webcam demo
 
-This is the path that matches the eye-state / EAR webcam work.
+This is the main EAR webcam path (`SourceCode.py`).
 
 **Run from Terminal.app** (macOS Camera permission often fails when launched from an IDE):
 
