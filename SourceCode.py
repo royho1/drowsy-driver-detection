@@ -14,9 +14,9 @@ from scipy.spatial import distance
 PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
 ALERT_SOUND = "music.wav"
 
-# Defaults called out on the resume: EAR < 0.25 for 20 consecutive frames.
+# EAR < thresh for frame_check consecutive frames (~2.5–3s at ~25–30 FPS).
 thresh = 0.25
-frame_check = 20
+frame_check = 70
 
 mixer.init()
 _alert_loaded = False
@@ -93,7 +93,7 @@ if not cap.isOpened():
 flag = 0
 print(
     "Driver Drowsiness Detection running — look at the camera, "
-    "close your eyes ~1s to trigger an alert. Press q to quit."
+    "close your eyes a few seconds to trigger an alert. Press q to quit."
 )
 
 while True:
