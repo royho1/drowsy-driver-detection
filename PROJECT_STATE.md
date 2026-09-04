@@ -5,14 +5,14 @@ Durable agent memory for this repository. Not a README. Capture only what future
 ## Snapshot
 
 - **What this is:** Python drowsy-driver prototype with two separate demos: real-time EAR webcam (`SourceCode.py`) and Flask image-upload classification (`app.py`).
-- **Current phase / constraints:** Interview-ready live path uses `.venv` + `requirements.txt` + `setup_live_demo.py`. Predictor `.dat` and `.venv` are gitignored (download locally). `drowsiness_model.h5` still not in repo; no training code here.
+- **Current phase / constraints:** Live EAR path uses `.venv` + `requirements.txt` + `setup_live_demo.py`. Predictor `.dat` and `.venv` are gitignored (download locally). `drowsiness_model.h5` still not in repo; no training code here.
 
 ## Learnings
 
-### 2026-09-02 — Interview live demo setup
-- **Learning:** Resume bullets map to `SourceCode.py` (EAR 0.25 / 20 frames, dlib 68-pt, scipy Euclidean, OpenCV grayscale + convex hull, pygame alert). Run via `setup_live_demo.py` then `.venv/bin/python SourceCode.py`. Camera TCC often blocks Cursor-spawned processes; use Terminal.app and grant Camera permission.
+### 2026-09-02 — Live demo setup
+- **Learning:** The webcam path is `SourceCode.py` (EAR 0.25 / 20 frames, dlib 68-pt, scipy Euclidean, OpenCV grayscale + convex hull, pygame alert). Run via `setup_live_demo.py` then `.venv/bin/python SourceCode.py`. Camera TCC often blocks Cursor-spawned processes; use Terminal.app and grant Camera permission.
 - **Why it matters:** Agents may think the demo is broken when only OS camera permission or a missing `.dat` is wrong.
-- **Implication:** Do not require `drowsiness_model.h5` for the live interview path; keep OpenCV `<5` in requirements to reduce pygame/SDL friction; prefer Terminal for webcam demos.
+- **Implication:** Do not require `drowsiness_model.h5` for the live EAR path; keep OpenCV `<5` in requirements to reduce pygame/SDL friction; prefer Terminal for webcam demos.
 
 ### 2026-09-02 — Clone setup mismatches
 - **Learning:** README still referenced `drunk_drowsy_detection.py` / `data/` after the fork; live demo needs a separately downloaded dlib predictor; dataset scripts expect `kaggle_data/`.

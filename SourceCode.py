@@ -14,7 +14,7 @@ from scipy.spatial import distance
 PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
 ALERT_SOUND = "music.wav"
 
-# Defaults called out on the resume: EAR < 0.25 for 20 consecutive frames.
+# Alert when EAR stays below this threshold for frame_check consecutive frames.
 thresh = 0.25
 frame_check = 20
 
