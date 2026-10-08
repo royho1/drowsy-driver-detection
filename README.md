@@ -7,6 +7,22 @@ A real-time computer vision system that detects signs of driver drowsiness from 
 
 Kaggle Dataset (optional, for the image scripts): https://www.kaggle.com/datasets/prasadvpatil/mrl-dataset
 
+## Screenshots
+
+### Eyes open: landmark tracking
+
+![Eyes open with landmark tracking](docs/screenshots/eyes-open-tracking.png)
+
+`SourceCode.py` detects the face with dlib and draws convex-hull contours around both eyes while EAR stays above the threshold.
+
+### Drowsiness alert
+
+![Drowsiness alert triggered](docs/screenshots/drowsiness-alert.png)
+
+After the eyes stay closed (EAR below `0.25`) for 70 consecutive frames, the app overlays **DROWSINESS ALERT!** and plays `music.wav`.
+
+Both frames are real output from `SourceCode.py`, fed an AI-generated driver image in place of a live webcam.
+
 ## Interview / live demo (resume-accurate path)
 
 This is the path that matches the eye-state / EAR webcam work.
