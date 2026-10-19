@@ -6,6 +6,13 @@ A real-time computer vision system that detects signs of driver drowsiness from 
 
 ![How this project works. Webcam frames are resized and converted to grayscale, dlib places 68 facial landmarks, both eyes are scored with an eye aspect ratio, and a ratio under 0.25 for 70 frames triggers an on-screen alert and a sound. A separate upload demo classifies an eye photo with a local Keras model.](docs/how-it-works.png)
 
+The frames below are the live detector on a generated driver. Open eyes only get the green outlines. Once the eyes stay closed, the window adds **DROWSINESS ALERT!**.
+
+<p>
+  <img src="docs/demo-eyes-open.png" alt="Live demo frame of a generated driver with eyes open. Green outlines sit on both eyes and no alert is shown." width="49%">
+  <img src="docs/demo-eyes-closed.png" alt="Live demo frame of the same generated driver with eyes closed. Green outlines follow the eyelids and the window shows DROWSINESS ALERT." width="49%">
+</p>
+
 Kaggle Dataset (optional, for the image scripts): https://www.kaggle.com/datasets/prasadvpatil/mrl-dataset
 
 ## Interview / live demo (resume-accurate path)
@@ -60,6 +67,8 @@ Defaults: EAR threshold `0.25`, consecutive-frame check `70`.
 ├── test_data.py                  # Optional model smoke test on sample images
 ├── dataset_processing.py         # Optional Kaggle eye-image explorer
 ├── docs/how-it-works.png         # Diagram shown above
+├── docs/demo-eyes-open.png       # Detector frame, eyes open
+├── docs/demo-eyes-closed.png     # Detector frame, eyes closed
 ├── music.wav                     # Alert sound
 ├── requirements.txt              # Live EAR demo dependencies
 ├── requirements-optional.txt     # Flask / TensorFlow extras
