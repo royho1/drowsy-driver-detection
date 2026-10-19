@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040">
+  <rect width="1600" height="1040" fill="#F3F6F9"/>
+
+  <!-- Header -->
+  <rect width="1600" height="128" fill="#0B1F33"/>
+  <text x="56" y="46" fill="#93C5FD" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.6">DROWSY DRIVER DETECTION</text>
+  <text x="56" y="82" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">How this project works</text>
+  <text x="56" y="108" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="15">A webcam watches the eyes. If they stay closed for a few seconds, the system shows an alert and plays a sound.</text>
+
+  <!-- Live path label -->
+  <text x="56" y="168" fill="#0B1F33" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">Live webcam path</text>
+  <rect x="220" y="152" width="132" height="22" rx="11" fill="#E0E7FF"/>
+  <text x="286" y="167" text-anchor="middle" fill="#1E3A8A" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700">SourceCode.py</text>
+
+  <!-- Step cards -->
+  <g font-family="Arial, Helvetica, sans-serif">
+    <!-- 1 -->
+    <g transform="translate(48,188)">
+      <rect width="272" height="176" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <circle cx="32" cy="36" r="14" fill="#0B1F33"/>
+      <text x="32" y="41" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">1</text>
+      <text x="56" y="32" fill="#64748B" font-size="11" font-weight="700" letter-spacing="1.1">INPUT</text>
+      <text x="56" y="52" fill="#0F172A" font-size="18" font-weight="700">Webcam</text>
+      <text x="20" y="92" fill="#475569" font-size="14">
+        <tspan x="20" dy="0">Read each video frame</tspan>
+        <tspan x="20" dy="20">from the camera.</tspan>
+      </text>
+    </g>
+    <!-- 2 -->
+    <g transform="translate(356,188)">
+      <rect width="272" height="176" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <circle cx="32" cy="36" r="14" fill="#1D4ED8"/>
+      <text x="32" y="41" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">2</text>
+      <text x="56" y="32" fill="#1D4ED8" font-size="11" font-weight="700" letter-spacing="1.1">PREPARE</text>
+      <text x="56" y="52" fill="#0F172A" font-size="18" font-weight="700">Clean the frame</text>
+      <text x="20" y="92" fill="#475569" font-size="14">
+        <tspan x="20" dy="0">Resize to 450 px wide.</tspan>
+        <tspan x="20" dy="20">Convert it to grayscale.</tspan>
+      </text>
+    </g>
+    <!-- 3 -->
+    <g transform="translate(664,188)">
+      <rect width="272" height="176" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <circle cx="32" cy="36" r="14" fill="#0F766E"/>
+      <text x="32" y="41" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">3</text>
+      <text x="56" y="32" fill="#0F766E" font-size="11" font-weight="700" letter-spacing="1.1">DETECT</text>
+      <text x="56" y="52" fill="#0F172A" font-size="18" font-weight="700">Find the face</text>
+      <text x="20" y="92" fill="#475569" font-size="14">
+        <tspan x="20" dy="0">dlib finds the face, then</tspan>
+        <tspan x="20" dy="20">places 68 landmarks.</tspan>
+      </text>
+    </g>
+    <!-- 4 -->
+    <g transform="translate(972,188)">
+      <rect width="272" height="176" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <circle cx="32" cy="36" r="14" fill="#0369A1"/>
+      <text x="32" y="41" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">4</text>
+      <text x="56" y="32" fill="#0369A1" font-size="11" font-weight="700" letter-spacing="1.1">EYES</text>
+      <text x="56" y="52" fill="#0F172A" font-size="18" font-weight="700">Trace both eyes</text>
+      <text x="20" y="92" fill="#475569" font-size="14">
+        <tspan x="20" dy="0">Take the left and right</tspan>
+        <tspan x="20" dy="20">eye points and outline them.</tspan>
+      </text>
+    </g>
+    <!-- 5 -->
+    <g transform="translate(1280,188)">
+      <rect width="272" height="176" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <circle cx="32" cy="36" r="14" fill="#B45309"/>
+      <text x="32" y="41" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700">5</text>
+      <text x="56" y="32" fill="#B45309" font-size="11" font-weight="700" letter-spacing="1.1">SCORE</text>
+      <text x="56" y="52" fill="#0F172A" font-size="18" font-weight="700">Measure EAR</text>
+      <text x="20" y="92" fill="#475569" font-size="14">
+        <tspan x="20" dy="0">Score each eye, then</tspan>
+        <tspan x="20" dy="20">average the two scores.</tspan>
+      </text>
+    </g>
+
+    <!-- Arrows between cards. Card bottoms sit at y=364; vertical center is 276. -->
+    <g fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M324 276 H348 M340 268 L350 276 L340 284"/>
+      <path d="M632 276 H656 M648 268 L658 276 L648 284"/>
+      <path d="M940 276 H964 M956 268 L966 276 L956 284"/>
+      <path d="M1248 276 H1272 M1264 268 L1274 276 L1264 284"/>
+    </g>
+  </g>
+
+  <!-- Rule -->
+  <text x="56" y="412" fill="#0B1F33" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">The drowsiness rule</text>
+  <text x="236" y="412" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="13">A lower eye aspect ratio means the eyelids are closer together.</text>
+
+  <defs>
+    <clipPath id="awake-clip">
+      <rect x="548" y="448" width="480" height="252" rx="12"/>
+    </clipPath>
+    <clipPath id="drowsy-clip">
+      <rect x="1048" y="448" width="480" height="252" rx="12"/>
+    </clipPath>
+  </defs>
+
+  <rect x="48" y="428" width="1504" height="292" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
+
+  <!-- Formula column -->
+  <rect x="68" y="448" width="460" height="252" rx="12" fill="#F8FAFC"/>
+  <text x="88" y="474" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">Eye aspect ratio</text>
+
+  <!-- Eye centered in the left card. p1 is the left corner, then clockwise. -->
+  <g>
+    <path d="M168 548 C214 500 302 496 368 548 C302 600 214 604 168 548 Z" fill="#EFF6FF" stroke="#0F172A" stroke-width="2"/>
+    <line x1="220" y1="516" x2="220" y2="580" stroke="#1D4ED8" stroke-width="2"/>
+    <line x1="294" y1="512" x2="294" y2="584" stroke="#0F766E" stroke-width="2"/>
+    <line x1="176" y1="548" x2="360" y2="548" stroke="#B45309" stroke-width="2"/>
+    <circle cx="168" cy="548" r="4.5" fill="#0F172A"/>
+    <circle cx="220" cy="516" r="4.5" fill="#1D4ED8"/>
+    <circle cx="294" cy="512" r="4.5" fill="#0F766E"/>
+    <circle cx="368" cy="548" r="4.5" fill="#0F172A"/>
+    <circle cx="294" cy="584" r="4.5" fill="#0F766E"/>
+    <circle cx="220" cy="580" r="4.5" fill="#1D4ED8"/>
+    <text x="198" y="552" fill="#1D4ED8" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700">A</text>
+    <text x="300" y="552" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700">B</text>
+    <text x="252" y="540" fill="#B45309" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700">C</text>
+  </g>
+
+  <text x="88" y="632" fill="#0F172A" font-family="Menlo, Consolas, monospace" font-size="14" font-weight="700">EAR = (A + B) / (2C)</text>
+  <text x="88" y="654" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="13">A, B vertical. C is width. Average both eyes.</text>
+  <rect x="340" y="616" width="148" height="26" rx="8" fill="#FEF3C7"/>
+  <text x="414" y="634" text-anchor="middle" fill="#92400E" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700">Threshold 0.25</text>
+
+  <!-- Awake -->
+  <g clip-path="url(#awake-clip)">
+    <rect x="548" y="448" width="480" height="252" fill="#F0FDF4"/>
+    <rect x="548" y="448" width="8" height="252" fill="#047857"/>
+  </g>
+  <rect x="548" y="448" width="480" height="252" rx="12" fill="none" stroke="#BBF7D0"/>
+  <text x="576" y="484" fill="#047857" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1">STILL AWAKE</text>
+  <text x="576" y="516" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Eyes open again</text>
+  <text x="576" y="556" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="15">
+    <tspan x="576" dy="0">If EAR rises above 0.25, the</tspan>
+    <tspan x="576" dy="24">closed-eye counter resets to 0.</tspan>
+    <tspan x="576" dy="24">The camera keeps watching.</tspan>
+  </text>
+
+  <!-- Drowsy -->
+  <g clip-path="url(#drowsy-clip)">
+    <rect x="1048" y="448" width="480" height="252" fill="#FFF1F2"/>
+    <rect x="1048" y="448" width="8" height="252" fill="#BE123C"/>
+  </g>
+  <rect x="1048" y="448" width="480" height="252" rx="12" fill="none" stroke="#FECDD3"/>
+  <text x="1076" y="484" fill="#BE123C" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1">DROWSY</text>
+  <text x="1076" y="516" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">Eyes stay closed</text>
+  <text x="1076" y="556" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="15">
+    <tspan x="1076" dy="0">If EAR stays under 0.25 for</tspan>
+    <tspan x="1076" dy="24">70 frames in a row (a few seconds):</tspan>
+    <tspan x="1076" dy="28" fill="#BE123C" font-weight="700">DROWSINESS ALERT!</tspan>
+    <tspan x="1076" dy="24" fill="#475569">and music.wav plays.</tspan>
+  </text>
+
+  <!-- Optional -->
+  <text x="56" y="764" fill="#0B1F33" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">Optional upload demo</text>
+  <rect x="250" y="748" width="78" height="22" rx="11" fill="#F1F5F9" stroke="#E2E8F0"/>
+  <text x="289" y="763" text-anchor="middle" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700">app.py</text>
+  <text x="344" y="764" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="13">Separate from the webcam. Needs a local drowsiness_model.h5, which is not in this repo.</text>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g transform="translate(48,788)">
+      <rect width="352" height="132" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-dasharray="5 4"/>
+      <text x="20" y="36" fill="#64748B" font-size="12" font-weight="700">1 - UPLOAD</text>
+      <text x="20" y="66" fill="#0F172A" font-size="16" font-weight="700">Eye photo</text>
+      <text x="20" y="92" fill="#475569" font-size="14">Browser form in index.html.</text>
+    </g>
+    <g transform="translate(424,788)">
+      <rect width="352" height="132" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-dasharray="5 4"/>
+      <text x="20" y="36" fill="#64748B" font-size="12" font-weight="700">2 - PREPARE</text>
+      <text x="20" y="66" fill="#0F172A" font-size="16" font-weight="700">64 x 64 grayscale</text>
+      <text x="20" y="92" fill="#475569" font-size="14">Pixels scaled from 0 to 1.</text>
+    </g>
+    <g transform="translate(800,788)">
+      <rect width="352" height="132" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-dasharray="5 4"/>
+      <text x="20" y="36" fill="#64748B" font-size="12" font-weight="700">3 - CLASSIFY</text>
+      <text x="20" y="66" fill="#0F172A" font-size="16" font-weight="700">Keras model</text>
+      <text x="20" y="92" fill="#475569" font-size="14">Compares closed vs open eyes.</text>
+    </g>
+    <g transform="translate(1176,788)">
+      <rect width="376" height="132" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-dasharray="5 4"/>
+      <text x="20" y="36" fill="#64748B" font-size="12" font-weight="700">4 - RESULT</text>
+      <text x="20" y="66" fill="#0F172A" font-size="16" font-weight="700">Closed or open</text>
+      <text x="20" y="92" fill="#475569" font-size="14">Closed eyes plays the alert sound.</text>
+    </g>
+    <g fill="none" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M404 854 H418 M410 848 L420 854 L410 860"/>
+      <path d="M780 854 H794 M786 848 L796 854 L786 860"/>
+      <path d="M1156 854 H1170 M1162 848 L1172 854 L1162 860"/>
+    </g>
+  </g>
+
+  <text x="56" y="972" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="13">Press q to close the webcam window. The live path does not use the Keras model.</text>
+</svg>
